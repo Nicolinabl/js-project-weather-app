@@ -1,0 +1,91 @@
+body {
+  background-color: #F7E9B9;
+  font-family: 'Montserrat', sans-serif;
+  display: flex;
+  flex-direction: column;
+  color: #2A5510;
+  gap: 50px;
+  margin: 0;
+}
+
+main {
+  width: 40vw;
+  /* align-self: center; */
+  margin: 64px auto;
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  main {
+    width: 100%;
+    padding: 49px 47px;
+    margin: 0;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  main {
+    width: 100%;
+    padding: 49px 47px;
+    margin: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  main {
+    width: 100%;
+    padding: 49px 47px;
+    margin: 0;
+  }
+}
+
+
+.top-info {
+  display: flex;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+}
+
+hr {
+  color: #2A5510;
+  height: 15px;
+  align-self: flex-end;
+  margin: 0;
+  border: 0.5px solid #2A5510;
+}
+
+.top-info p {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  font-size: 21px;
+}
+
+#adviceSection {
+  margin-top: 60px;
+  margin-bottom: 13px;
+}
+
+img {
+  height: auto;
+  width: 73px;
+  margin-bottom: 18px;
+}
+
+.advice-text {
+  font-size: 37px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.weekly-temp div {
+  display: flex;
+  justify-content: space-between;
+  font-size: 21px;
+  border-bottom: 1px dashed #707070;
+}
+
+.weekly-temp p {
+  margin: 0;
+  padding: 8px 0;
+}
