@@ -37,7 +37,8 @@ interface TodayWeatherData {
 }
 
 const todayForecast = () => {
-  // clear html
+  // const timeNow = new Date() /* <-- gets current time. Next step: show data from the timeSeries closest to current time instead of always showing timeSeries[0]. Very hard..... */
+
   todayWeather = {
     condition: data.timeSeries[0].data.symbol_code,
     airTemp: data.timeSeries[0].data.air_temperature
@@ -56,6 +57,26 @@ const todayForecast = () => {
 
 }
 
+
+
+
+
+
+
+
+//test to get swedish local time 
+const todaySwedishForecast = (data: any) => {
+  const now = new Date()
+  const currentHour = now.getHours()
+
+  const entry = data.timeSeries.find((item: any) => {
+    const forecastDate = new Date(item.validTime)
+    return forecastDate.getHours() === currentHour
+  }) ?? data.timeSeries[0]
+
+  const forecastDate = new Date(entry.validTime)
+  console.log("forecast time (swedish local", forecastDate.toString)
+}
 /*
 const symbolMeanings: string[] = [
   "", // index 0 (unused, just a placeholder)
