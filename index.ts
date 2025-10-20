@@ -8,8 +8,12 @@ const weatherURL = `https://opendata-download-metfcst.smhi.se/api/category/snow1
 
 //Dom selectors
 const topInfoContainer = document.getElementById("topInfoContainer") as HTMLSectionElement
+const adviceContainer = document.getElementById("adviceSection")
 
-
+interface TodayWeatherData {
+  condition: number,
+  airTemp: number
+}
 let data: any /*Look into this */
 let todayWeather: TodayWeatherData
 
@@ -29,19 +33,14 @@ const fetchData = async () => {
   }
 }
 
-fetchData()
 
-interface TodayWeatherData {
-  condition: string,
-  airTemp: number
-}
 
 const todayForecast = () => {
   // const timeNow = new Date() /* <-- gets current time. Next step: show data from the timeSeries closest to current time instead of always showing timeSeries[0]. Very hard..... */
 
   todayWeather = {
-    condition: data.timeSeries[0].data.symbol_code,
-    airTemp: data.timeSeries[0].data.air_temperature
+    condition: data.timeSeries[2].data.symbol_code,
+    airTemp: data.timeSeries[2].data.air_temperature
   }
 
   topInfoContainer.innerHTML = `
@@ -54,10 +53,24 @@ const todayForecast = () => {
   if (data.symbol_code === 6) {
 
   }
-
+  showMessage(todayWeather, adviceContainer)
 }
 
+const showMessage = (data: TodayWeatherData, adviceContainer: HTMLElement): void => {
+  adviceContainer.innerHTML = ``
 
+  if ((data.condition <= 2) && data.airTemp >= 20) {
+    adviceContainer.innerHTML = `
+    <h1>get your sunnies on. stockholm is amazing</h1>`
+  } else if ((data.condition >= 3 && data.condition <= 6) && (data.airTemp >= 15 && data.airTemp < 20)) {
+    adviceContainer.innerHTML = `
+    <h1>it's a bit cloudy but warm. a nice day for a walk in stockholm</h1>`
+  } else {
+    adviceContainer.innerHTML = `
+    <h1>stay inside and code some more</h1>`
+  }
+}
+fetchData()
 
 //test to get swedish local time 
 const todaySwedishForecast = (data: any) => {
