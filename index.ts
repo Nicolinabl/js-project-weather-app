@@ -59,11 +59,6 @@ const todayForecast = () => {
 
 
 
-
-
-
-
-
 //test to get swedish local time 
 const todaySwedishForecast = (data: any) => {
   const now = new Date()
