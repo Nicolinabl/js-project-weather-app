@@ -8,12 +8,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+//----------------------------------
+// Dom selectors
+//----------------------------------
+const topInfoContainer = document.getElementById("topInfoContainer");
+const weeklyTempContainer = document.getElementById("weeklyTemp"); /* Nicolina added this: dom selector for bottom section */
+//----------------------------------
+// API link
+//----------------------------------
 const weatherURL = `https://opendata-download-metfcst.smhi.se/api/category/snow1g/version/1/geotype/point/lon/16.158/lat/58.5812/data.json?parameters=air_temperature,symbol_code`;
+//----------------------------------
+// Suggestions of interfaces:
+//----------------------------------
 // interface 1 top info
 // interface 2 advice message part
 // interface 3 weekly temps
-//Dom selectors
-const topInfoContainer = document.getElementById("topInfoContainer");
+//----------------------------------
+// Fetch API function
+//----------------------------------
 let data; /*Look into this */
 let todayWeather;
 const fetchData = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -25,12 +37,16 @@ const fetchData = () => __awaiter(void 0, void 0, void 0, function* () {
         data = yield response.json();
         console.log(data);
         todayForecast(data);
+        displayWeeklyTemps(); /* Nicolina added this. Calling function for weekly forecast */
     }
     catch (error) {
         console.log("catched and error");
     }
 });
 fetchData();
+//----------------------------------
+// Show todays forecast function
+//----------------------------------
 const todayForecast = () => {
     // const timeNow = new Date() /* <-- gets current time. Next step: show data from the timeSeries closest to current time instead of always showing timeSeries[0]. Very hard..... */
     todayWeather = {
@@ -47,6 +63,68 @@ const todayForecast = () => {
     if (data.symbol_code === 6) {
     }
 };
+//----------------------------------
+// Display weekly temps bottom part function
+//----------------------------------
+const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]; /* Array of weekdays. To be used for displaying weekdays dynamically */
+let weatherForecast; /* Defining weatherForecast object */
+const displayWeeklyTemps = () => {
+    const rotateWeekdays = () => {
+        const today = new Date();
+        const todayIndex = today.getDay();
+        for (let i = 0; i < weekDays.length; i++) {
+        }
+    };
+    weatherForecast = {
+        firstDay: data.timeSeries[0].data.air_temperature,
+        secondDay: data.timeSeries[25].data.air_temperature,
+        thirdDay: data.timeSeries[49].data.air_temperature,
+        fourthDay: data.timeSeries[59].data.air_temperature,
+        fifthDay: data.timeSeries[63].data.air_temperature,
+        sixthDay: data.timeSeries[67].data.air_temperature,
+        seventhDay: data.timeSeries[71].data.air_temperature
+    };
+    weeklyTempContainer.innerHTML = `
+      <div id="mondayTemp">
+        <p>Today</p>
+        <p>${weatherForecast.firstDay}°</p>
+      </div>
+
+      <div id="tuesdayTemp">
+        <p>tomorrow</p>
+        <p>${weatherForecast.secondDay}°</p>
+      </div>
+
+      <div id="wednesdayTemp">
+        <p>day after</p>
+        <p>${weatherForecast.thirdDay}°</p>
+      </div>
+
+      <div id="thursdayTemp">
+        <p>day after +1</p>
+        <p>${weatherForecast.fourthDay}°</p>
+      </div>
+
+      <div id="fridayTemp">
+        <p>day after +2</p>
+        <p>${weatherForecast.fifthDay}°</p>
+      </div>
+
+      <div id="saturdayTemp">
+        <p>day after +3</p>
+        <p>${weatherForecast.sixthDay}°</p>
+      </div>
+
+      <div id="sundayTemp">
+        <p>day after +4</p>
+        <p>${weatherForecast.seventhDay}°</p>
+      </div>
+  `;
+}; /* Next step figure out:
+- which timeSeries to use for each day?
+- Average temp or lowest and highest? How find?
+- How to loop through days and show current day on top?
+*/
 //test to get swedish local time 
 const todaySwedishForecast = (data) => {
     var _a;

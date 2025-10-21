@@ -1,15 +1,27 @@
+//----------------------------------
+// Dom selectors
+//----------------------------------
+const topInfoContainer = document.getElementById("topInfoContainer") as HTMLSectionElement
+const weeklyTempContainer = document.getElementById("weeklyTemp") as HTMLElement /* Nicolina added this: dom selector for bottom section */
+
+
+//----------------------------------
+// API link
+//----------------------------------
 const weatherURL = `https://opendata-download-metfcst.smhi.se/api/category/snow1g/version/1/geotype/point/lon/16.158/lat/58.5812/data.json?parameters=air_temperature,symbol_code`
 
+
+//----------------------------------
+// Suggestions of interfaces:
+//----------------------------------
 // interface 1 top info
-
 // interface 2 advice message part
-
 // interface 3 weekly temps
 
-//Dom selectors
-const topInfoContainer = document.getElementById("topInfoContainer") as HTMLSectionElement
 
-
+//----------------------------------
+// Fetch API function
+//----------------------------------
 let data: any /*Look into this */
 let todayWeather: TodayWeatherData
 
@@ -23,6 +35,7 @@ const fetchData = async () => {
     console.log(data)
 
     todayForecast(data)
+    displayWeeklyTemps() /* Nicolina added this. Calling function for weekly forecast */
 
   } catch (error) {
     console.log("catched and error")
@@ -32,10 +45,14 @@ const fetchData = async () => {
 fetchData()
 
 interface TodayWeatherData {
-  condition: string,
+  condition: string, /* Look into this. condition is also number? */
   airTemp: number
 }
 
+
+//----------------------------------
+// Show todays forecast function
+//----------------------------------
 const todayForecast = () => {
   // const timeNow = new Date() /* <-- gets current time. Next step: show data from the timeSeries closest to current time instead of always showing timeSeries[0]. Very hard..... */
 
@@ -52,12 +69,88 @@ const todayForecast = () => {
         </div>
   `
   if (data.symbol_code === 6) {
-
   }
-
 }
 
 
+//----------------------------------
+// Display weekly temps bottom part function
+//----------------------------------
+const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] /* Array of weekdays. To be used for displaying weekdays dynamically */
+
+interface WeatherForecastData { /* Interface for the weather forecasts */
+  firstDay: number
+  secondDay: number
+  thirdDay: number
+  fourthDay: number
+  fifthDay: number
+  sixthDay: number
+  seventhDay: number
+}
+
+let weatherForecast: WeatherForecastData /* Defining weatherForecast object */
+
+const displayWeeklyTemps = () => {
+
+  const rotateWeekdays = () => { /* Accessing what today is and what index today has */
+    const today = new Date()
+    const todayIndex = today.getDay()
+    for (let i = 0; i < weekDays.length; i++) {
+
+    }
+  }
+
+  weatherForecast = { /* Selecting which timeSeries to use for each day */
+    firstDay: data.timeSeries[0].data.air_temperature,
+    secondDay: data.timeSeries[25].data.air_temperature,
+    thirdDay: data.timeSeries[49].data.air_temperature,
+    fourthDay: data.timeSeries[59].data.air_temperature,
+    fifthDay: data.timeSeries[63].data.air_temperature,
+    sixthDay: data.timeSeries[67].data.air_temperature,
+    seventhDay: data.timeSeries[71].data.air_temperature
+  }
+
+  weeklyTempContainer.innerHTML = `
+      <div id="mondayTemp">
+        <p>Today</p>
+        <p>${weatherForecast.firstDay}°</p>
+      </div>
+
+      <div id="tuesdayTemp">
+        <p>tomorrow</p>
+        <p>${weatherForecast.secondDay}°</p>
+      </div>
+
+      <div id="wednesdayTemp">
+        <p>day after</p>
+        <p>${weatherForecast.thirdDay}°</p>
+      </div>
+
+      <div id="thursdayTemp">
+        <p>day after +1</p>
+        <p>${weatherForecast.fourthDay}°</p>
+      </div>
+
+      <div id="fridayTemp">
+        <p>day after +2</p>
+        <p>${weatherForecast.fifthDay}°</p>
+      </div>
+
+      <div id="saturdayTemp">
+        <p>day after +3</p>
+        <p>${weatherForecast.sixthDay}°</p>
+      </div>
+
+      <div id="sundayTemp">
+        <p>day after +4</p>
+        <p>${weatherForecast.seventhDay}°</p>
+      </div>
+  `
+} /* Next step figure out: 
+- which timeSeries to use for each day?
+- Average temp or lowest and highest? How find?
+- How to loop through days and show current day on top?
+*/
 
 //test to get swedish local time 
 const todaySwedishForecast = (data: any) => {
@@ -72,6 +165,8 @@ const todaySwedishForecast = (data: any) => {
   const forecastDate = new Date(entry.validTime)
   console.log("forecast time (swedish local", forecastDate.toString)
 }
+
+
 /*
 const symbolMeanings: string[] = [
   "", // index 0 (unused, just a placeholder)
