@@ -17,6 +17,7 @@ TO DOS
 - Add sunset/sunrise API - Carolina
 - Add dynamic messages based of temperature 
 - Change color depending weather
+- look into more paramaters from smhi api
 
 
 Stretch goal options

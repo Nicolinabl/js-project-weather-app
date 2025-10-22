@@ -12,17 +12,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 // Dom selectors
 //----------------------------------
 const topInfoContainer = document.getElementById("topInfoContainer");
-const weeklyTempContainer = document.getElementById("weeklyTemp"); /* Nicolina added this: dom selector for bottom section */
+const weeklyTempContainer = document.getElementById("weeklyTemp"); /*  added this: dom selector for bottom section */
+const adviceContainer = document.getElementById("adviceSection");
 //----------------------------------
 // API link
 //----------------------------------
 const weatherURL = `https://opendata-download-metfcst.smhi.se/api/category/snow1g/version/1/geotype/point/lon/16.158/lat/58.5812/data.json?parameters=air_temperature,symbol_code`;
-//----------------------------------
-// Suggestions of interfaces:
-//----------------------------------
-// interface 1 top info
-// interface 2 advice message part
-// interface 3 weekly temps
 //----------------------------------
 // Fetch API function
 //----------------------------------
@@ -36,14 +31,13 @@ const fetchData = () => __awaiter(void 0, void 0, void 0, function* () {
         }
         data = yield response.json();
         console.log(data);
-        todayForecast(data);
-        displayWeeklyTemps(); /* Nicolina added this. Calling function for weekly forecast */
+        displayWeeklyTemps(); /*  added this. Calling function for weekly forecast */
+        todayForecast();
     }
     catch (error) {
-        console.log("catched and error");
+        console.log("catch and error");
     }
 });
-fetchData();
 //----------------------------------
 // Show todays forecast function
 //----------------------------------
@@ -62,7 +56,35 @@ const todayForecast = () => {
   `;
     if (data.symbol_code === 6) {
     }
+    showMessage(todayWeather, adviceContainer, weeklyTempContainer);
 };
+const showMessage = (data, adviceContainer, weeklyTempContainer) => {
+    if (!weeklyTempContainer || !adviceContainer)
+        return;
+    adviceContainer.innerHTML = ``;
+    if ((data.condition >= 1 && data.condition <= 2) && data.airTemp >= 20) {
+        document.body.style.backgroundColor = "#F7E9B9";
+        document.body.style.color = "#2A5510";
+        adviceContainer.innerHTML = `
+     <img class="advice-img" src="Group 7.png" alt="outlined icon with weather-appropriate accessories">
+    <h1>get your sunglasses on. Stockholm is amazing</h1>`;
+    }
+    else if ((data.condition >= 3 && data.condition <= 6) && data.airTemp < 20) {
+        document.body.style.backgroundColor = "#FFFFFF";
+        document.body.style.color = "#F47775";
+        adviceContainer.innerHTML = `
+    <img class="advice-img" src="./Figma designs for students (2)/Group 8@2x.png" alt="outlined icon with weather-appropriate accessories">
+    <h1>Light a fire and get cosy. Stockholm is looking grey today. </h1>`;
+    }
+    else if (data.condition >= 8 && data.condition <= 20) {
+        document.body.style.backgroundColor = "#BDE8FA";
+        document.body.style.color = "#164A68";
+        adviceContainer.innerHTML = `
+    <img class="advice-img" src="./Figma designs for students (1)/noun_Umbrella_2030530@2x.png"" alt="outlined icon with weather-appropriate accessories">
+    <h1>Don’t forget your umbrella. It’s wet in Stockholm today.</h1>`;
+    }
+};
+fetchData();
 //----------------------------------
 // Display weekly temps bottom part function
 //----------------------------------
@@ -139,13 +161,18 @@ const todaySwedishForecast = (data) => {
     const forecastDate = new Date(entry.validTime);
     console.log("forecast time (swedish local", forecastDate.toString);
 };
+}; /* Next step figure out:
+- which timeSeries to use for each day?
+- Average temp or lowest and highest? How find?
+- How to loop through days and show current day on top?
+*/
 /*
 const symbolMeanings: string[] = [
   "", // index 0 (unused, just a placeholder)
   "Clear sky ☀️",               // 1
   "Nearly clear sky 🌤",         // 2
   "Variable cloudiness ⛅",      // 3
-  "Halfclear sky 🌥",            // 4
+  "Half clear sky 🌥",            // 4
   "Cloudy sky ☁️",              // 5
   "Overcast ☁️",                // 6
   "Fog 🌫",                      // 7

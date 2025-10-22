@@ -1,8 +1,9 @@
 //----------------------------------
 // Dom selectors
 //----------------------------------
-const topInfoContainer = document.getElementById("topInfoContainer") as HTMLSectionElement
-const weeklyTempContainer = document.getElementById("weeklyTemp") as HTMLElement /* Nicolina added this: dom selector for bottom section */
+const topInfoContainer = document.getElementById("topInfoContainer") as HTMLElement
+const weeklyTempContainer = document.getElementById("weeklyTemp") as HTMLElement /*  added this: dom selector for bottom section */
+const adviceContainer = document.getElementById("adviceSection") as HTMLElement
 
 
 //----------------------------------
@@ -19,6 +20,12 @@ const weatherURL = `https://opendata-download-metfcst.smhi.se/api/category/snow1
 // interface 3 weekly temps
 
 
+
+interface TodayWeatherData {
+  condition: number,
+  airTemp: number
+}
+
 //----------------------------------
 // Fetch API function
 //----------------------------------
@@ -34,31 +41,67 @@ const fetchData = async () => {
     data = await response.json()
     console.log(data)
 
-    todayForecast(data)
-    displayWeeklyTemps() /* Nicolina added this. Calling function for weekly forecast */
+    displayWeeklyTemps() /*  added this. Calling function for weekly forecast */
+    todayForecast()
 
   } catch (error) {
-    console.log("catched and error")
+    console.log("catch and error")
   }
 }
 
-fetchData()
 
-interface TodayWeatherData {
-  condition: string, /* Look into this. condition is also number? */
-  airTemp: number
+
+//Mapping codes and conditions:
+
+const weatherSymbol = (code: number): string => {
+ const mapping: Record<number, string> = {
+   1: "Clear sky",
+    2: "Nearly clear",
+    3: "Variable clouds",
+    4: "Halfclear sky",
+    5: "Cloudy",
+    6: "Overcast",
+    7: "Fog",
+    8: "Light rain",
+    9: "Moderate rain",
+    10: "Heavy showers",
+    11: "Thunderstorm",
+    12: "Light sleet",
+    13: "Moderate sleet",
+    14: "Heavy sleet",
+    15: "Light snow",
+    16: "Moderate snow",
+    17: "Heavy snow",
+    18: "Light rain",
+    19: "Moderate rain",
+    20: "Heavy rain",
+    21: "Thunder",
+    22: "Light sleet",
+    23: "Moderate sleet",
+    24: "Heavy sleet",
+    25: "Light snow",
+    26: "Moderate snow",
+    27: "Heavy snow"
+ }
+ return mapping[Math.round(code)] || "Unknown"
 }
 
 
 //----------------------------------
 // Show todays forecast function
 //----------------------------------
-const todayForecast = () => {
+const todayForecast = (data: any) => {
   // const timeNow = new Date() /* <-- gets current time. Next step: show data from the timeSeries closest to current time instead of always showing timeSeries[0]. Very hard..... */
 
+  const current = data.timeSeries[0].data
+  
+  const airTemp = current.air_temperature
+  const conditionCode = current.symbol_code
+  const conditionLabel = weatherSymbol(conditionCode)
+
   todayWeather = {
-    condition: data.timeSeries[0].data.symbol_code,
-    airTemp: data.timeSeries[0].data.air_temperature
+    condition: weatherSymbol(data.timeSeries[0].data.symbol_code),
+    airTemp
   }
 
   topInfoContainer.innerHTML = `
@@ -70,7 +113,40 @@ const todayForecast = () => {
   `
   if (data.symbol_code === 6) {
   }
+  showMessage(todayWeather, adviceContainer, weeklyTempContainer)
 }
+
+const showMessage = (data: TodayWeatherData, adviceContainer: HTMLElement, weeklyTempContainer: HTMLElement): void => {
+
+  if (!weeklyTempContainer || !adviceContainer) return
+  adviceContainer.innerHTML = ``
+
+
+  if ((data.condition >= 1 && data.condition <= 2) && data.airTemp >= 20) {
+    document.body.style.backgroundColor = "#F7E9B9"
+    document.body.style.color = "#2A5510"
+    adviceContainer.innerHTML = `
+     <img class="advice-img" src="Group 7.png" alt="outlined icon with weather-appropriate accessories">
+    <h1>get your sunglasses on. Stockholm is amazing</h1>`
+
+  } else if ((data.condition >= 3 && data.condition <= 6) && data.airTemp < 20) {
+    document.body.style.backgroundColor = "#FFFFFF"
+    document.body.style.color = "#F47775"
+    adviceContainer.innerHTML = `
+    <img class="advice-img" src="./Figma designs for students (2)/Group 8@2x.png" alt="outlined icon with weather-appropriate accessories">
+    <h1>Light a fire and get cosy. Stockholm is looking grey today. </h1>`
+
+  } else if (data.condition >= 8 && data.condition <= 20) {
+    document.body.style.backgroundColor = "#BDE8FA"
+    document.body.style.color = "#164A68"
+
+    adviceContainer.innerHTML = `
+    <img class="advice-img" src="./Figma designs for students (1)/noun_Umbrella_2030530@2x.png"" alt="outlined icon with weather-appropriate accessories">
+    <h1>Don’t forget your umbrella. It’s wet in Stockholm today.</h1>`
+  }
+}
+fetchData()
+
 
 
 //----------------------------------
@@ -155,20 +231,6 @@ const displayWeeklyTemps = () => {
 
 
 
-//test to get swedish local time 
-const todaySwedishForecast = (data: any) => {
-  const now = new Date()
-  const currentHour = now.getHours()
-
-  const entry = data.timeSeries.find((item: any) => {
-    const forecastDate = new Date(item.validTime)
-    return forecastDate.getHours() === currentHour
-  }) ?? data.timeSeries[0]
-
-  const forecastDate = new Date(entry.validTime)
-  console.log("forecast time (swedish local", forecastDate.toString)
-}
-
 
 /*
 const symbolMeanings: string[] = [
@@ -176,7 +238,7 @@ const symbolMeanings: string[] = [
   "Clear sky ☀️",               // 1
   "Nearly clear sky 🌤",         // 2
   "Variable cloudiness ⛅",      // 3
-  "Halfclear sky 🌥",            // 4
+  "Half clear sky 🌥",            // 4
   "Cloudy sky ☁️",              // 5
   "Overcast ☁️",                // 6
   "Fog 🌫",                      // 7
