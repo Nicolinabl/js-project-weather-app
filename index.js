@@ -12,26 +12,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 // Dom selectors
 //----------------------------------
 const topInfoContainer = document.getElementById("topInfoContainer");
-const weeklyTempContainer = document.getElementById("weeklyTemp"); /* Nicolina added this: dom selector for bottom section */
+const weeklyTempContainer = document.getElementById("weeklyTemp"); /*  added this: dom selector for bottom section */
+const adviceContainer = document.getElementById("adviceSection");
 //----------------------------------
 // API link
 //----------------------------------
 const weatherURL = `https://opendata-download-metfcst.smhi.se/api/category/snow1g/version/1/geotype/point/lon/16.158/lat/58.5812/data.json?parameters=air_temperature,symbol_code`;
 //----------------------------------
-// Suggestions of interfaces:
-//----------------------------------
-// interface 1 top info
-// interface 2 advice message part
-// interface 3 weekly temps
-<<<<<<< HEAD
-//Dom selectors
-const topInfoContainer = document.getElementById("topInfoContainer");
-const adviceContainer = document.getElementById("adviceSection");
-=======
-//----------------------------------
 // Fetch API function
 //----------------------------------
->>>>>>> origin
 let data; /*Look into this */
 let todayWeather;
 const fetchData = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -42,25 +31,21 @@ const fetchData = () => __awaiter(void 0, void 0, void 0, function* () {
         }
         data = yield response.json();
         console.log(data);
-        todayForecast(data);
-        displayWeeklyTemps(); /* Nicolina added this. Calling function for weekly forecast */
+        displayWeeklyTemps(); /*  added this. Calling function for weekly forecast */
+        todayForecast();
     }
     catch (error) {
-        console.log("catched and error");
+        console.log("catch and error");
     }
 });
-<<<<<<< HEAD
-=======
-fetchData();
 //----------------------------------
 // Show todays forecast function
 //----------------------------------
->>>>>>> origin
 const todayForecast = () => {
     // const timeNow = new Date() /* <-- gets current time. Next step: show data from the timeSeries closest to current time instead of always showing timeSeries[0]. Very hard..... */
     todayWeather = {
-        condition: data.timeSeries[2].data.symbol_code,
-        airTemp: data.timeSeries[2].data.air_temperature
+        condition: data.timeSeries[0].data.symbol_code,
+        airTemp: data.timeSeries[0].data.air_temperature
     };
     topInfoContainer.innerHTML = `
         <div class="top-info">
@@ -71,26 +56,35 @@ const todayForecast = () => {
   `;
     if (data.symbol_code === 6) {
     }
-    showMessage(todayWeather, adviceContainer);
+    showMessage(todayWeather, adviceContainer, weeklyTempContainer);
 };
-const showMessage = (data, adviceContainer) => {
+const showMessage = (data, adviceContainer, weeklyTempContainer) => {
+    if (!weeklyTempContainer || !adviceContainer)
+        return;
     adviceContainer.innerHTML = ``;
-    if ((data.condition <= 2) && data.airTemp >= 20) {
+    if ((data.condition >= 1 && data.condition <= 2) && data.airTemp >= 20) {
+        document.body.style.backgroundColor = "#F7E9B9";
+        document.body.style.color = "#2A5510";
         adviceContainer.innerHTML = `
-    <h1>get your sunnies on. stockholm is amazing</h1>`;
+     <img class="advice-img" src="Group 7.png" alt="outlined icon with weather-appropriate accessories">
+    <h1>get your sunglasses on. Stockholm is amazing</h1>`;
     }
-    else if ((data.condition >= 3 && data.condition <= 6) && (data.airTemp >= 15 && data.airTemp < 20)) {
+    else if ((data.condition >= 3 && data.condition <= 6) && data.airTemp < 20) {
+        document.body.style.backgroundColor = "#FFFFFF";
+        document.body.style.color = "#F47775";
         adviceContainer.innerHTML = `
-    <h1>it's a bit cloudy but warm. a nice day for a walk in stockholm</h1>`;
+    <img class="advice-img" src="./Figma designs for students (2)/Group 8@2x.png" alt="outlined icon with weather-appropriate accessories">
+    <h1>Light a fire and get cosy. Stockholm is looking grey today. </h1>`;
     }
-    else {
+    else if (data.condition >= 8 && data.condition <= 20) {
+        document.body.style.backgroundColor = "#BDE8FA";
+        document.body.style.color = "#164A68";
         adviceContainer.innerHTML = `
-    <h1>stay inside and code some more</h1>`;
+    <img class="advice-img" src="./Figma designs for students (1)/noun_Umbrella_2030530@2x.png"" alt="outlined icon with weather-appropriate accessories">
+    <h1>Don’t forget your umbrella. It’s wet in Stockholm today.</h1>`;
     }
 };
-<<<<<<< HEAD
 fetchData();
-=======
 //----------------------------------
 // Display weekly temps bottom part function
 //----------------------------------
@@ -153,26 +147,13 @@ const displayWeeklyTemps = () => {
 - Average temp or lowest and highest? How find?
 - How to loop through days and show current day on top?
 */
->>>>>>> origin
-//test to get swedish local time 
-const todaySwedishForecast = (data) => {
-    var _a;
-    const now = new Date();
-    const currentHour = now.getHours();
-    const entry = (_a = data.timeSeries.find((item) => {
-        const forecastDate = new Date(item.validTime);
-        return forecastDate.getHours() === currentHour;
-    })) !== null && _a !== void 0 ? _a : data.timeSeries[0];
-    const forecastDate = new Date(entry.validTime);
-    console.log("forecast time (swedish local", forecastDate.toString);
-};
 /*
 const symbolMeanings: string[] = [
   "", // index 0 (unused, just a placeholder)
   "Clear sky ☀️",               // 1
   "Nearly clear sky 🌤",         // 2
   "Variable cloudiness ⛅",      // 3
-  "Halfclear sky 🌥",            // 4
+  "Half clear sky 🌥",            // 4
   "Cloudy sky ☁️",              // 5
   "Overcast ☁️",                // 6
   "Fog 🌫",                      // 7
