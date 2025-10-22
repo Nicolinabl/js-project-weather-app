@@ -92,11 +92,12 @@ const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]; /* Array of 
 let weatherForecast; /* Defining weatherForecast object */
 const displayWeeklyTemps = () => {
     const rotateWeekdays = () => {
-        const today = new Date();
-        const todayIndex = today.getDay();
-        for (let i = 0; i < weekDays.length; i++) {
-        }
+        const today = new Date(); /* Gets today */
+        const todayIndex = today.getDay(); /* Gets index of today. 0 = sunday */
+        const rotated = weekDays.slice(todayIndex).concat(weekDays.slice(0, todayIndex));
+        return rotated;
     };
+    const rotatedWeekdays = rotateWeekdays();
     weatherForecast = {
         firstDay: data.timeSeries[0].data.air_temperature,
         secondDay: data.timeSeries[25].data.air_temperature,
@@ -106,42 +107,60 @@ const displayWeeklyTemps = () => {
         sixthDay: data.timeSeries[67].data.air_temperature,
         seventhDay: data.timeSeries[71].data.air_temperature
     };
+    const labels = rotatedWeekdays.map((day, i) => {
+        if (i === 0)
+            return "Today";
+        return day;
+    });
     weeklyTempContainer.innerHTML = `
       <div id="mondayTemp">
-        <p>Today</p>
+        <p>${labels[0]}</p>
         <p>${weatherForecast.firstDay}°</p>
       </div>
 
       <div id="tuesdayTemp">
-        <p>tomorrow</p>
+        <p>${labels[1]}</p>
         <p>${weatherForecast.secondDay}°</p>
       </div>
 
       <div id="wednesdayTemp">
-        <p>day after</p>
+        <p>${labels[2]}</p>
         <p>${weatherForecast.thirdDay}°</p>
       </div>
 
       <div id="thursdayTemp">
-        <p>day after +1</p>
+        <p>${labels[3]}</p>
         <p>${weatherForecast.fourthDay}°</p>
       </div>
 
       <div id="fridayTemp">
-        <p>day after +2</p>
+        <p>${labels[4]}</p>
         <p>${weatherForecast.fifthDay}°</p>
       </div>
 
       <div id="saturdayTemp">
-        <p>day after +3</p>
+        <p>${labels[5]}</p>
         <p>${weatherForecast.sixthDay}°</p>
       </div>
 
       <div id="sundayTemp">
-        <p>day after +4</p>
+        <p>${labels[6]}</p>
         <p>${weatherForecast.seventhDay}°</p>
       </div>
   `;
+};
+//test to get swedish local time 
+const todaySwedishForecast = (data) => {
+    var _a;
+    const now = new Date();
+    const currentHour = now.getHours();
+    const entry = (_a = data.timeSeries.find((item) => {
+        const forecastDate = new Date(item.validTime);
+        return forecastDate.getHours() === currentHour;
+    })) !== null && _a !== void 0 ? _a : data.timeSeries[0];
+    const forecastDate = new Date(entry.validTime);
+    console.log("forecast time (swedish local", forecastDate.toString);
+};
 }; /* Next step figure out:
 - which timeSeries to use for each day?
 - Average temp or lowest and highest? How find?

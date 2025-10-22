@@ -167,14 +167,14 @@ interface WeatherForecastData { /* Interface for the weather forecasts */
 let weatherForecast: WeatherForecastData /* Defining weatherForecast object */
 
 const displayWeeklyTemps = () => {
-
-  const rotateWeekdays = () => { /* Accessing what today is and what index today has */
-    const today = new Date()
-    const todayIndex = today.getDay()
-    for (let i = 0; i < weekDays.length; i++) {
-
-    }
+  const rotateWeekdays = () => {
+    const today = new Date() /* Gets today */
+    const todayIndex = today.getDay() /* Gets index of today. 0 = sunday */
+    const rotated = weekDays.slice(todayIndex).concat(weekDays.slice(0, todayIndex))
+    return rotated
   }
+
+  const rotatedWeekdays = rotateWeekdays()
 
   weatherForecast = { /* Selecting which timeSeries to use for each day */
     firstDay: data.timeSeries[0].data.air_temperature,
@@ -186,47 +186,50 @@ const displayWeeklyTemps = () => {
     seventhDay: data.timeSeries[71].data.air_temperature
   }
 
+  const labels = rotatedWeekdays.map((day, i) => {
+    if (i === 0) return "Today"
+    return day
+  })
+
   weeklyTempContainer.innerHTML = `
       <div id="mondayTemp">
-        <p>Today</p>
+        <p>${labels[0]}</p>
         <p>${weatherForecast.firstDay}°</p>
       </div>
 
       <div id="tuesdayTemp">
-        <p>tomorrow</p>
+        <p>${labels[1]}</p>
         <p>${weatherForecast.secondDay}°</p>
       </div>
 
       <div id="wednesdayTemp">
-        <p>day after</p>
+        <p>${labels[2]}</p>
         <p>${weatherForecast.thirdDay}°</p>
       </div>
 
       <div id="thursdayTemp">
-        <p>day after +1</p>
+        <p>${labels[3]}</p>
         <p>${weatherForecast.fourthDay}°</p>
       </div>
 
       <div id="fridayTemp">
-        <p>day after +2</p>
+        <p>${labels[4]}</p>
         <p>${weatherForecast.fifthDay}°</p>
       </div>
 
       <div id="saturdayTemp">
-        <p>day after +3</p>
+        <p>${labels[5]}</p>
         <p>${weatherForecast.sixthDay}°</p>
       </div>
 
       <div id="sundayTemp">
-        <p>day after +4</p>
+        <p>${labels[6]}</p>
         <p>${weatherForecast.seventhDay}°</p>
       </div>
   `
-} /* Next step figure out: 
-- which timeSeries to use for each day?
-- Average temp or lowest and highest? How find?
-- How to loop through days and show current day on top?
-*/
+}
+
+
 
 
 /*
