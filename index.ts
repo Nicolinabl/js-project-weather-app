@@ -9,7 +9,7 @@ const adviceContainer = document.getElementById("adviceSection") as HTMLElement
 //----------------------------------
 // API link
 //----------------------------------
-const weatherURL = `https://opendata-download-metfcst.smhi.se/api/category/snow1g/version/1/geotype/point/lon/16.158/lat/58.5812/data.json?parameters=air_temperature,symbol_code`
+const weatherURL = `https://opendata-download-metfcst.smhi.se/api/category/snow1g/version/1/geotype/point/lon/16.158/lat/58.5812/data.json?parameters=air_temperature,symbol_code,probability_of_precipitation`
 
 
 //----------------------------------
@@ -22,8 +22,9 @@ const weatherURL = `https://opendata-download-metfcst.smhi.se/api/category/snow1
 
 
 interface TodayWeatherData {
-  condition: number,
-  airTemp: number
+  condition: string,
+  airTemp: number,
+  rainData: number
 }
 
 //----------------------------------
@@ -98,10 +99,12 @@ const todayForecast = (/*data: any*/) => {
   const airTemp = current.air_temperature
   const conditionCode = current.symbol_code
   const conditionLabel = weatherSymbol(conditionCode)
+  const rainData = current.probability_of_precipitation
 
   todayWeather = {
     condition: weatherSymbol(data.timeSeries[0].data.symbol_code),
-    airTemp
+    airTemp,
+    rainData
   }
 
   topInfoContainer.innerHTML = `
@@ -109,6 +112,7 @@ const todayForecast = (/*data: any*/) => {
           <p id="topCondition">${todayWeather.condition}</p>
           <hr>
           <p id="topTemp">${todayWeather.airTemp}&deg;</p>
+          <p id="topRainData">Probability of rain: ${todayWeather.rainData}%</p>
         </div>
   `
   if (data.symbol_code === 6) {
@@ -116,35 +120,46 @@ const todayForecast = (/*data: any*/) => {
   showMessage(todayWeather, adviceContainer, weeklyTempContainer)
 }
 
+/*show advice message and changes color and symbol depending on weather (airTemp och condition)*/
+
 const showMessage = (data: TodayWeatherData, adviceContainer: HTMLElement, weeklyTempContainer: HTMLElement): void => {
 
   if (!weeklyTempContainer || !adviceContainer) return
   adviceContainer.innerHTML = ``
 
+  const condition = data.condition.toLowerCase()
 
-  if ((data.condition >= 1 && data.condition <= 2) && data.airTemp >= 20) {
+  if ((condition.includes("clear") || condition.includes("fair")) && airTemp >= 20) {
     document.body.style.backgroundColor = "#F7E9B9"
     document.body.style.color = "#2A5510"
     adviceContainer.innerHTML = `
      <img class="advice-img" src="Group 7.png" alt="outlined icon with weather-appropriate accessories">
     <h1>get your sunglasses on. Stockholm is amazing</h1>`
 
-  } else if ((data.condition >= 3 && data.condition <= 6) && data.airTemp < 20) {
+  } else if ((condition.includes("cloudy") || condition.includes("overcast")) &&
+    data.airTemp < 20) {
     document.body.style.backgroundColor = "#FFFFFF"
     document.body.style.color = "#F47775"
     adviceContainer.innerHTML = `
     <img class="advice-img" src="./Figma designs for students (2)/Group 8@2x.png" alt="outlined icon with weather-appropriate accessories">
     <h1>Light a fire and get cosy. Stockholm is looking grey today. </h1>`
+  }
 
-  } else if (data.condition >= 8 && data.condition <= 20) {
-    document.body.style.backgroundColor = "#BDE8FA"
-    document.body.style.color = "#164A68"
-
+  else if (condition.includes("rain") || condition.includes("sleet") || condition.includes("snow") || condition.includes("thunder")) {
+    document.body.style.backgroundColor = "#BDE8FA";
+    document.body.style.color = "#F47775";
     adviceContainer.innerHTML = `
-    <img class="advice-img" src="./Figma designs for students (1)/noun_Umbrella_2030530@2x.png"" alt="outlined icon with weather-appropriate accessories">
-    <h1>Don’t forget your umbrella. It’s wet in Stockholm today.</h1>`
+      <img class="advice-img" src="./Figma designs for students (1)/noun_Umbrella_2030530@2x.png" alt="outlined icon with weather-appropriate accessories">
+      <h1>Don’t forget your umbrella. It’s wet in Stockholm today.</h1>`;
+  }
+
+  else {
+    document.body.style.backgroundColor = "#EEE";
+    document.body.style.color = "#333";
+    adviceContainer.innerHTML = `<h1>Weather data unavailable</h1>`;
   }
 }
+
 fetchData()
 
 
