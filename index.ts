@@ -2,7 +2,8 @@
 // Dom selectors
 //----------------------------------
 const topInfoContainer = document.getElementById("topInfoContainer") as HTMLElement
-const weeklyTempContainer = document.getElementById("weeklyTemp") as HTMLElement /* Nicolina added this: dom selector for bottom section */
+const weeklyTempContainer = document.getElementById("weeklyTemp") as HTMLElement /*  added this: dom selector for bottom section */
+const adviceContainer = document.getElementById("adviceSection") as HTMLElement
 
 
 //----------------------------------
@@ -19,6 +20,12 @@ const weatherURL = `https://opendata-download-metfcst.smhi.se/api/category/snow1
 // interface 3 weekly temps
 
 
+
+interface TodayWeatherData {
+  condition: number,
+  airTemp: number
+}
+
 //----------------------------------
 // Fetch API function
 //----------------------------------
@@ -34,20 +41,15 @@ const fetchData = async () => {
     data = await response.json()
     console.log(data)
 
-    todayForecast(data)
-    displayWeeklyTemps() /* Nicolina added this. Calling function for weekly forecast */
+    displayWeeklyTemps() /*  added this. Calling function for weekly forecast */
+    todayForecast()
 
   } catch (error) {
-    console.log("catched and error")
+    console.log("catch and error")
   }
 }
 
-fetchData()
 
-interface TodayWeatherData {
-  condition: string, /* Look into this. condition is also number? */
-  airTemp: number
-}
 
 //Mapping codes and conditions:
 
@@ -109,11 +111,42 @@ const todayForecast = (data: any) => {
           <p id="topTemp">${todayWeather.airTemp}&deg;</p>
         </div>
   `
-  console.log("Raw symbol_code:", conditionCode);
-  console.log("Converted condition:", conditionLabel);
- /*  if (data.symbol_code === 6) {
-  } */
+  if (data.symbol_code === 6) {
+  }
+  showMessage(todayWeather, adviceContainer, weeklyTempContainer)
 }
+
+const showMessage = (data: TodayWeatherData, adviceContainer: HTMLElement, weeklyTempContainer: HTMLElement): void => {
+
+  if (!weeklyTempContainer || !adviceContainer) return
+  adviceContainer.innerHTML = ``
+
+
+  if ((data.condition >= 1 && data.condition <= 2) && data.airTemp >= 20) {
+    document.body.style.backgroundColor = "#F7E9B9"
+    document.body.style.color = "#2A5510"
+    adviceContainer.innerHTML = `
+     <img class="advice-img" src="Group 7.png" alt="outlined icon with weather-appropriate accessories">
+    <h1>get your sunglasses on. Stockholm is amazing</h1>`
+
+  } else if ((data.condition >= 3 && data.condition <= 6) && data.airTemp < 20) {
+    document.body.style.backgroundColor = "#FFFFFF"
+    document.body.style.color = "#F47775"
+    adviceContainer.innerHTML = `
+    <img class="advice-img" src="./Figma designs for students (2)/Group 8@2x.png" alt="outlined icon with weather-appropriate accessories">
+    <h1>Light a fire and get cosy. Stockholm is looking grey today. </h1>`
+
+  } else if (data.condition >= 8 && data.condition <= 20) {
+    document.body.style.backgroundColor = "#BDE8FA"
+    document.body.style.color = "#164A68"
+
+    adviceContainer.innerHTML = `
+    <img class="advice-img" src="./Figma designs for students (1)/noun_Umbrella_2030530@2x.png"" alt="outlined icon with weather-appropriate accessories">
+    <h1>Don’t forget your umbrella. It’s wet in Stockholm today.</h1>`
+  }
+}
+fetchData()
+
 
 
 //----------------------------------
@@ -195,20 +228,6 @@ const displayWeeklyTemps = () => {
 - How to loop through days and show current day on top?
 */
 
-//test to get swedish local time 
-const todaySwedishForecast = (data: any) => {
-  const now = new Date()
-  const currentHour = now.getHours()
-
-  const entry = data.timeSeries.find((item: any) => {
-    const forecastDate = new Date(item.validTime)
-    return forecastDate.getHours() === currentHour
-  }) ?? data.timeSeries[0]
-
-  const forecastDate = new Date(entry.validTime)
-  console.log("forecast time (swedish local", forecastDate.toString)
-}
-
 
 /*
 const symbolMeanings: string[] = [
@@ -216,7 +235,7 @@ const symbolMeanings: string[] = [
   "Clear sky ☀️",               // 1
   "Nearly clear sky 🌤",         // 2
   "Variable cloudiness ⛅",      // 3
-  "Halfclear sky 🌥",            // 4
+  "Half clear sky 🌥",            // 4
   "Cloudy sky ☁️",              // 5
   "Overcast ☁️",                // 6
   "Fog 🌫",                      // 7
