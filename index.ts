@@ -54,8 +54,8 @@ const fetchData = async () => {
 //Mapping codes and conditions:
 
 const weatherSymbol = (code: number): string => {
- const mapping: Record<number, string> = {
-   1: "Clear sky",
+  const mapping: Record<number, string> = {
+    1: "Clear sky",
     2: "Nearly clear",
     3: "Variable clouds",
     4: "Halfclear sky",
@@ -82,19 +82,19 @@ const weatherSymbol = (code: number): string => {
     25: "Light snow",
     26: "Moderate snow",
     27: "Heavy snow"
- }
- return mapping[Math.round(code)] || "Unknown"
+  }
+  return mapping[Math.round(code)] || "Unknown"
 }
 
 
 //----------------------------------
 // Show todays forecast function
 //----------------------------------
-const todayForecast = (data: any) => {
+const todayForecast = (/*data: any*/) => {
   // const timeNow = new Date() /* <-- gets current time. Next step: show data from the timeSeries closest to current time instead of always showing timeSeries[0]. Very hard..... */
 
   const current = data.timeSeries[0].data
-  
+
   const airTemp = current.air_temperature
   const conditionCode = current.symbol_code
   const conditionLabel = weatherSymbol(conditionCode)
