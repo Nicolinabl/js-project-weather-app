@@ -1,7 +1,7 @@
 //----------------------------------
 // Dom selectors
 //----------------------------------
-const topInfoContainer = document.getElementById("topInfoContainer") as HTMLSectionElement
+const topInfoContainer = document.getElementById("topInfoContainer") as HTMLElement
 const weeklyTempContainer = document.getElementById("weeklyTemp") as HTMLElement /* Nicolina added this: dom selector for bottom section */
 
 
@@ -49,16 +49,57 @@ interface TodayWeatherData {
   airTemp: number
 }
 
+//Mapping codes and conditions:
+
+const weatherSymbol = (code: number): string => {
+ const mapping: Record<number, string> = {
+   1: "Clear sky",
+    2: "Nearly clear",
+    3: "Variable clouds",
+    4: "Halfclear sky",
+    5: "Cloudy",
+    6: "Overcast",
+    7: "Fog",
+    8: "Light rain",
+    9: "Moderate rain",
+    10: "Heavy showers",
+    11: "Thunderstorm",
+    12: "Light sleet",
+    13: "Moderate sleet",
+    14: "Heavy sleet",
+    15: "Light snow",
+    16: "Moderate snow",
+    17: "Heavy snow",
+    18: "Light rain",
+    19: "Moderate rain",
+    20: "Heavy rain",
+    21: "Thunder",
+    22: "Light sleet",
+    23: "Moderate sleet",
+    24: "Heavy sleet",
+    25: "Light snow",
+    26: "Moderate snow",
+    27: "Heavy snow"
+ }
+ return mapping[Math.round(code)] || "Unknown"
+}
+
 
 //----------------------------------
 // Show todays forecast function
 //----------------------------------
-const todayForecast = () => {
+const todayForecast = (data: any) => {
   // const timeNow = new Date() /* <-- gets current time. Next step: show data from the timeSeries closest to current time instead of always showing timeSeries[0]. Very hard..... */
 
+  const current = data.timeSeries[0].data
+  
+  const airTemp = current.air_temperature
+  const conditionCode = current.symbol_code
+  const conditionLabel = weatherSymbol(conditionCode)
+
   todayWeather = {
-    condition: data.timeSeries[0].data.symbol_code,
-    airTemp: data.timeSeries[0].data.air_temperature
+    condition: weatherSymbol(data.timeSeries[0].data.symbol_code),
+    airTemp
   }
 
   topInfoContainer.innerHTML = `
@@ -68,8 +109,10 @@ const todayForecast = () => {
           <p id="topTemp">${todayWeather.airTemp}&deg;</p>
         </div>
   `
-  if (data.symbol_code === 6) {
-  }
+  console.log("Raw symbol_code:", conditionCode);
+  console.log("Converted condition:", conditionLabel);
+ /*  if (data.symbol_code === 6) {
+  } */
 }
 
 
