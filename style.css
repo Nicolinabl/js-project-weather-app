@@ -25,11 +25,10 @@ main {
 }
 
 hr {
-  color: #2A5510;
-  height: 15px;
+  height: 20px;
   align-self: flex-end;
   margin: 0;
-  border: 0.5px solid #2A5510;
+  border: 0.5px solid black;
 }
 
 .top-info p {
