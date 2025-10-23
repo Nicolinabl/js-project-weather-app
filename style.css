@@ -15,7 +15,6 @@ main {
   align-self: center;
 }
 
-
 .top-info {
   display: flex;
   gap: 10px;
@@ -28,7 +27,7 @@ hr {
   height: 20px;
   align-self: flex-end;
   margin: 0;
-  border: 0.5px solid black;
+  border: 0.5px solid;
 }
 
 .top-info p {
@@ -93,40 +92,5 @@ img {
 
   .weekly-temp div {
     font-size: 16px;
-  }
-}
-
-@media (max-width: 320px) {
-  body {
-    gap: 20px;
-  }
-
-  main {
-    width: 95%;
-    margin: 24px auto;
-  }
-
-  .top-info {
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .top-info p {
-    font-size: 14px;
-    text-align: center;
-  }
-
-  img {
-    width: 50px;
-  }
-
-  .advice-text {
-    font-size: 22px;
-    text-align: center;
-  }
-
-  .weekly-temp div {
-    font-size: 14px;
   }
 }
