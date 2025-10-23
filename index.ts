@@ -129,7 +129,7 @@ const showMessage = (data: TodayWeatherData, adviceContainer: HTMLElement, weekl
 
   const condition = data.condition.toLowerCase()
 
-  if ((condition.includes("clear") || condition.includes("fair")) && airTemp >= 20) {
+  if ((condition.includes("clear") || condition.includes("fair")) && data.airTemp >= 20) {
     document.body.style.backgroundColor = "#F7E9B9"
     document.body.style.color = "#2A5510"
     adviceContainer.innerHTML = `
