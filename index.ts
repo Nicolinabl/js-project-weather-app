@@ -2,14 +2,17 @@
 // Dom selectors
 //----------------------------------
 const topInfoContainer = document.getElementById("topInfoContainer") as HTMLElement
-const weeklyTempContainer = document.getElementById("weeklyTemp") as HTMLElement /*  added this: dom selector for bottom section */
+const weeklyTempContainer = document.getElementById("weeklyTemp") as HTMLElement
 const adviceContainer = document.getElementById("adviceSection") as HTMLElement
+const sunTimesContainer = document.getElementById("sunTimesContainer") as HTMLElement
 
 
 //----------------------------------
 // API link
 //----------------------------------
 const weatherURL = `https://opendata-download-metfcst.smhi.se/api/category/snow1g/version/1/geotype/point/lon/16.158/lat/58.5812/data.json?parameters=air_temperature,symbol_code`
+
+const sunriseSunset = `https://api.sunrisesunset.io/json?lat=58.5812&lng=16.158` /* Look into adjusting coordinates */
 
 
 //----------------------------------
@@ -27,7 +30,7 @@ interface TodayWeatherData {
 }
 
 //----------------------------------
-// Fetch API function
+// Fetch weather API function
 //----------------------------------
 let data: any /*Look into this */
 let todayWeather: TodayWeatherData
@@ -45,11 +48,63 @@ const fetchData = async () => {
     todayForecast()
 
   } catch (error) {
-    console.log("catch and error")
+    console.log("catch and error") /* What do we mean here? */
   }
 }
 
 
+//----------------------------------
+// Fetch sunrise/sunset API function
+//----------------------------------
+let sunData: any
+
+const fetchSunriseSunsetData = async () => {
+  try {
+    const response = await fetch(sunriseSunset)
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`)
+    }
+
+    sunData = await response.json()
+    console.log(sunData)
+    displaySunTimes(sunData)
+
+  } catch (error) {
+    console.error("An error occured:", error)
+  }
+}
+
+
+//----------------------------------
+// Sunrise/sunset function
+//----------------------------------
+
+// interface SunriseSunsetData { /* This not needed? */
+//   sunrise: number
+//   sunset: number
+// }
+
+// let sunriseSunsetTimes: SunriseSunsetData 
+
+const displaySunTimes = (sunData: any) => {
+
+  const sunrise = sunData.results.sunrise
+  const sunset = sunData.results.sunset
+
+  sunTimesContainer.innerHTML = `
+        <div class="top-info">
+          <p id="topSunrise">Sunrise</p>
+          <p id="sunriseTime">${sunrise}</p>
+        </div>
+
+        <div class="top-info">
+          <p id="topSunset">sunset</p>
+          <p id="sunsetTime">${sunset}</p>
+        </div>
+  `
+}
+
+fetchSunriseSunsetData()
 
 //Mapping codes and conditions:
 
@@ -146,7 +201,6 @@ const showMessage = (data: TodayWeatherData, adviceContainer: HTMLElement, weekl
   }
 }
 fetchData()
-
 
 
 //----------------------------------
