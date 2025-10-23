@@ -136,7 +136,9 @@ const todayForecast = () => {
   </div>`;
     showMessage(todayWeather, adviceContainer, weeklyTempContainer);
 };
-/*show advice message and changes color and symbol depending on weather (airTemp och condition)*/
+//----------------------------------
+// Function for showing advice message, symbol and diffrent styling depending on weather
+//----------------------------------
 const showMessage = (data, adviceContainer, weeklyTempContainer) => {
     const hrElement = document.querySelector("hr");
     if (!weeklyTempContainer || !adviceContainer)
