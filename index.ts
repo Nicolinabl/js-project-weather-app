@@ -175,7 +175,7 @@ const todayForecast = () => {
   `
   rainContainer.innerHTML = `
   <div class="top-info">
-  <p id="topRainData">Probability of rain: ${todayWeather.rainData}%</p>
+  <p id="topRainData">Probability of precipitation: ${todayWeather.rainData}%</p>
   </div>`
 
   showMessage(todayWeather, adviceContainer, weeklyTempContainer)

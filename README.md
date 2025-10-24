@@ -5,6 +5,9 @@ https://weather-app-rock-3.netlify.app/
 This is a group project. The aim was to build a functional weather app using typeScript and collecting data from open API. We have also explored and practiced working on creating and merging branches.
 
 Collaborators:
+* Carro-barro
+* Nicolinabl
+* Demijuls
 
 ## Project requirements met
 
