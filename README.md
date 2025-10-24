@@ -1,32 +1,33 @@
 # js-project-weather-app
 
-## Project requirements
+https://weather-app-rock-3.netlify.app/
 
-### API
-* location
-* condition(symbol_code)
-* 7 day forecast
-* Air temperature. (air_temperature)
+This is a group project part of Technigo JavaScript bootcamp. The aim was to build a functional weather app using typeScript and collecting data from SMHI open API. We have also explored and practiced working on creating and merging branches.
 
-## Stretch goals
-* sunrise/sunset
-
-TO DOS 
-- !Connect weather symbol-code to string & icon -> Julia
-- !Display dynamic temps in bottom weekly list -> Nicolina
-- Add sunset/sunrise API - Carolina
-- Add dynamic messages based of temperature 
-- Change color depending weather
-- look into more paramaters from smhi api
+Collaborators:
+* Carro-barro
+* Nicolinabl
+* Demijuls
 
 
-Stretch goal options
-Feature: Sunrise & Sunset 🌅 Use the sunrise/sunset API to display when the sun rises and sets.
+## Project requirements met
 
-Feature: More cities 🏙️ Give the user the option to choose between a couple of your favourite cities, or create a searchbar where the user can search for a specific city.
+* Fetching API from SMHI
+* Displaying location 
+* Displaying current weather condition. Connected weather symbol-code to string.
+* Including 7 day forecast
+* Displaying current air temperature. (air_temperature)
+* Add dynamic messages based of temperature
+* Change color depending weather
+* Display dynamic temps in forecast
 
-Feature: Use your location 🗺️ Use the Geolocation API that is built into your browser to fetch the city that you are located in at the moment and show the weather for your location.
+### Using typeScript
 
-Feature: Add more data 💽 Explore the API and use another endpoint of the API to include supplementary information.
+### Fully responsive on all devices
 
-Feature: CSS Animations ☀️ Add some CSS animations to your app, e.g. pulsating sun/raindrops.
+## Stretch goals met
+* Showing sunrise/sunset times
+* Added more data: chance of percipitation
+
+
+

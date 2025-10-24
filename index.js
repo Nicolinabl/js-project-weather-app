@@ -184,7 +184,7 @@ let weatherForecast; /* Defining weatherForecast object */
 const displayWeeklyTemps = () => {
     const rotateWeekdays = () => {
         const today = new Date(); /* Gets today */
-        const todayIndex = today.getDay(); /* Gets index of today. 0 = sunday */
+        const todayIndex = today.getDay(); /* Gets index of day. 0 = sunday */
         const rotated = weekDays.slice(todayIndex).concat(weekDays.slice(0, todayIndex));
         return rotated;
     };
@@ -204,7 +204,7 @@ const displayWeeklyTemps = () => {
         return day;
     });
     weeklyTempContainer.innerHTML = `
-      <div id="mondayTemp">
+      <div id="mondayTemp"> 
         <p>${labels[0]}</p>
         <p>${weatherForecast.firstDay}°</p>
       </div>
