@@ -199,13 +199,13 @@ const showMessage = (data: TodayWeatherData, adviceContainer: HTMLElement, weekl
     condition.includes("clear") ||
     condition.includes("nearly clear")
   ) {
-    document.body.style.backgroundColor = "#F7E9B9";
-    document.body.style.color = "#2A5510";
-    hrElement.style.borderColor = "#2A5510";
+    document.body.style.backgroundColor = "#F7E9B9"
+    document.body.style.color = "#2A5510"
+    hrElement.style.borderColor = "#2A5510"
 
     adviceContainer.innerHTML = `
       <img class="advice-img" src="Group 7.png" alt="sunny icon">
-      <h1>Get your sunglasses on. Stockholm is amazing!</h1>`;
+      <h1>Get your sunglasses on. Stockholm is amazing!</h1>`
   }
 
   // --- CLOUDY / OVERCAST / FOG ---
@@ -216,13 +216,13 @@ const showMessage = (data: TodayWeatherData, adviceContainer: HTMLElement, weekl
     condition.includes("variable") ||
     condition.includes("half cloudy sky")
   ) {
-    document.body.style.backgroundColor = "#FFFFFF";
-    document.body.style.color = "#F47775";
-    hrElement.style.borderColor = "#F47775";
+    document.body.style.backgroundColor = "#FFFFFF"
+    document.body.style.color = "#F47775"
+    hrElement.style.borderColor = "#F47775"
 
     adviceContainer.innerHTML = `
       <img class="advice-img" src="./Figma designs for students (2)/Group 8@2x.png" alt="cloudy icon">
-      <h1>Light a fire and get cosy. Stockholm is looking grey today.</h1>`;
+      <h1>Light a fire and get cosy. Stockholm is looking grey today.</h1>`
   }
 
   // --- RAIN / SLEET ---
@@ -231,24 +231,24 @@ const showMessage = (data: TodayWeatherData, adviceContainer: HTMLElement, weekl
     condition.includes("sleet") ||
     condition.includes("shower")
   ) {
-    document.body.style.backgroundColor = "#BDE8FA";
-    document.body.style.color = "#164A68";
-    hrElement.style.borderColor = "#164A68";
+    document.body.style.backgroundColor = "#BDE8FA"
+    document.body.style.color = "#164A68"
+    hrElement.style.borderColor = "#164A68"
 
     adviceContainer.innerHTML = `
       <img class="advice-img" src="./Figma designs for students (1)/noun_Umbrella_2030530@2x.png" alt="rainy icon">
-      <h1>Don't forget your umbrella. It's wet in Stockholm today.</h1>`;
+      <h1>Don't forget your umbrella. It's wet in Stockholm today.</h1>`
   }
 
   // --- SNOW ---
   else if (condition.includes("snow")) {
-    document.body.style.backgroundColor = "#EAF4FF";
-    document.body.style.color = "#1B3A57";
-    hrElement.style.borderColor = "#1B3A57";
+    document.body.style.backgroundColor = "#EAF4FF"
+    document.body.style.color = "#1B3A57"
+    hrElement.style.borderColor = "#1B3A57"
 
     adviceContainer.innerHTML = `
       <img class="advice-img" src="./snow-icon.png" alt="snow icon">
-      <h1>Wrap up warm — it's snowing in Stockholm!</h1>`;
+      <h1>Wrap up warm - it's snowing in Stockholm!</h1>`
   }
 
   // --- THUNDER / STORM ---
@@ -256,21 +256,21 @@ const showMessage = (data: TodayWeatherData, adviceContainer: HTMLElement, weekl
     condition.includes("thunder") ||
     condition.includes("storm")
   ) {
-    document.body.style.backgroundColor = "#B3B8C4";
-    document.body.style.color = "#2A2A2A";
-    hrElement.style.borderColor = "#2A2A2A";
+    document.body.style.backgroundColor = "#B3B8C4"
+    document.body.style.color = "#2A2A2A"
+    hrElement.style.borderColor = "#2A2A2A"
 
     adviceContainer.innerHTML = `
       <img class="advice-img" src="./storm-icon.png" alt="storm icon">
-      <h1>Stay safe — there’s a storm in Stockholm.</h1>`;
+      <h1>Stay safe - there's a storm in Stockholm.</h1>`
   }
 
   // --- FALLBACK ---
   else {
-    document.body.style.backgroundColor = "#EEE";
-    document.body.style.color = "#333";
-    hrElement.style.borderColor = "#000";
-    adviceContainer.innerHTML = `<h1>Anything could happen, you better be prepared!</h1>`;
+    document.body.style.backgroundColor = "#EEE"
+    document.body.style.color = "#333"
+    hrElement.style.borderColor = "#000"
+    adviceContainer.innerHTML = `<h1>Anything could happen, you better be prepared!</h1>`
   }
 }
 

@@ -186,7 +186,7 @@ const showMessage = (data, adviceContainer, weeklyTempContainer) => {
         hrElement.style.borderColor = "#1B3A57";
         adviceContainer.innerHTML = `
       <img class="advice-img" src="./snow-icon.png" alt="snow icon">
-      <h1>Wrap up warm — it's snowing in Stockholm!</h1>`;
+      <h1>Wrap up warm - it's snowing in Stockholm!</h1>`;
     }
     // --- THUNDER / STORM ---
     else if (condition.includes("thunder") ||
@@ -196,7 +196,7 @@ const showMessage = (data, adviceContainer, weeklyTempContainer) => {
         hrElement.style.borderColor = "#2A2A2A";
         adviceContainer.innerHTML = `
       <img class="advice-img" src="./storm-icon.png" alt="storm icon">
-      <h1>Stay safe — there’s a storm in Stockholm.</h1>`;
+      <h1>Stay safe - there's a storm in Stockholm.</h1>`;
     }
     // --- FALLBACK ---
     else {
