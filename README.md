@@ -2,17 +2,13 @@
 
 https://weather-app-rock-3.netlify.app/
 
-This is a group project part of Technigo JavaScript bootcamp. The aim was to build a functional weather app using typeScript and collecting data from SMHI open API. We have also explored and practiced working on creating and merging branches.
+This is a group project. The aim was to build a functional weather app using typeScript and collecting data from open API. We have also explored and practiced working on creating and merging branches.
 
 Collaborators:
-* Carro-barro
-* Nicolinabl
-* Demijuls
-
 
 ## Project requirements met
 
-* Fetching API from SMHI
+* Fetching API 
 * Displaying location 
 * Displaying current weather condition. Connected weather symbol-code to string.
 * Including 7 day forecast
@@ -27,7 +23,7 @@ Collaborators:
 
 ## Stretch goals met
 * Showing sunrise/sunset times
-* Added more data: chance of percipitation
+* Added more data: chance of precipitation
 
 
 
